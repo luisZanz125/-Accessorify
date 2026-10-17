@@ -2,6 +2,13 @@
 
 # Accessorify
 
+> [!IMPORTANT]
+> **Unofficial fan-made port — this is not the original mod.**
+>
+> This repository is an unofficial, community **fan-made port of [Accessorify](https://github.com/pajicadvance/accessorify) to Minecraft 1.21.11 (Fabric)**. It is **not** affiliated with, endorsed by or maintained by the original author, and the Modrinth/CurseForge links below point to the **original** project — not to a build produced from this repository.
+>
+> Accessorify itself is the work of **pajicadvance**, licensed [MIT](LICENSE_MOD), © 2025 pajic. All credit for the original mod belongs to them. This port only carries the compatibility changes described under [Mod compatibility](#mod-compatibility) so the mod keeps running on a newer Minecraft version, and is published for personal/fan use only.
+
 ## Download from [Modrinth](https://modrinth.com/mod/accessorify) / [CurseForge](https://www.curseforge.com/minecraft/mc-mods/accessorify)
 
 This mod lets you equip some vanilla items as accessories using [Accessories](https://modrinth.com/mod/accessories), adding new functionality and saving up inventory space.
@@ -84,6 +91,8 @@ Can now be equipped in the Shulker slot, which is added by this mod.
 
 When equipped, holding X (default keybind, configurable) brings up a shulker box selection widget. Scrolling with the mouse wheel while the widget is open selects which shulker box to open. Holding the sneak key shows the tooltip of the currently selected shulker box. Releasing the keybind opens the selected shulker box. The selection is saved, so opening the shulker box you previously opened only requires pressing B. Having one shulker box equipped skips the widget and immediately opens it. By default you have 3 shulker slots. If you want more (or less), follow the instructions near the bottom of the page.
 
+**Modded shulker boxes:** this port is compatible with [Reinforced Shulker Boxes](https://modrinth.com/mod/reinforced-shulker-boxes) — reinforced boxes open from the slot with the mod's own screen and their full per-material slot count, exactly as they do when placed in the world. See [Mod compatibility](#mod-compatibility) for details.
+
 ### Arrows
 
 Can now be equipped in the Arrow slot, which is added by this mod.
@@ -103,6 +112,10 @@ Type `arrow` in the slot box instead to modify the amount of arrow slots in the 
 - Add modded lanterns to the `minecraft:lanterns` (MC 1.21.10 and above only) or `accessorify:lanterns` item tags via a datapack to add mod support. Lanterns from [Additional Lanterns](https://modrinth.com/mod/additional-lanterns) and [Aurora's Lanterns](https://modrinth.com/mod/auroraslanterns) are supported out of the box.
 - Add modded totems to the `accessorify:totems` item tag via a datapack to add mod support. Totems from [Friends and Foes](https://modrinth.com/mod/friends-and-foes), [Netherite Extras](https://modrinth.com/mod/netherite-extras) and [Ars Elixirum](https://modrinth.com/mod/ars-elixirum) are supported out of the box.
 - Add modded arrows to the `minecraft:arrows` item tag via a datapack to add mod support.
+- **[Reinforced Shulker Boxes](https://modrinth.com/mod/reinforced-shulker-boxes)** (source: [Aton-Kish/reinforced-shulker-boxes](https://github.com/Aton-Kish/reinforced-shulker-boxes)): fully compatible in this port. Reinforced shulker boxes are equippable in the Shulker slot and open with **Reinforced Shulker Boxes' own screen**, showing the full per-material slot count — copper **45**, iron **54**, gold **81**, diamond/netherite **108** — instead of the vanilla 27.
+  - The five `#reinfshulker:*_shulker_boxes` item tags are declared (with `required: false`) in `accessorify:shulker_boxes`, because Reinforced Shulker Boxes only populates the *block* tag `minecraft:shulker_boxes`, not the item tag.
+  - Menu size is derived from the box's stored `minecraft:container` component instead of a hardcoded `27`. Upstream always uses `27`, which would silently truncate a reinforced box down to 27 slots and permanently delete everything past slot 27 on close. **This fix is specific to this port.**
+  - Fully optional: if Reinforced Shulker Boxes is not installed, none of this code runs and the mod behaves exactly like upstream.
 - [Serene Seasons](https://modrinth.com/mod/serene-seasons) or [Fabric Seasons](https://modrinth.com/mod/fabric-seasons) + [Fabric Seasons Extras](https://modrinth.com/mod/fabric-seasons-extras): Calendar equippable in the Charm/Calendar slot and shows the current season in the info overlay.
 - [Notes](https://modrinth.com/mod/notes): If "Hide gameplay info from F3 menu in survival" is on, the buttons used to add info such as coordinates to notes will be disabled unless you have a compass equipped.
 - For specific compatibility with certain mods, check out [Accessorify Plus](https://modrinth.com/mod/gk1h-accessorify+).
