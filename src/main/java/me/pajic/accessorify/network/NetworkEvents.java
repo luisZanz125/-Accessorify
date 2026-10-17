@@ -53,7 +53,10 @@ public class NetworkEvents {
         Optional<AccessoriesCapability> ac = AccessoriesCapability.getOptionally(player);
         if (ac.isPresent()) {
             ItemStack shulker = ac.get().getContainers().get("shulker").getAccessories().getItem(index);
-            player.openMenu(new ShulkerBoxAccessoryContainerMenu(shulker, 27));
+            // Die Groesse richtet sich nach der container-Komponente, damit ModBoxen
+            // (reinforced-shulker-boxes: 45/54/81/108 Slots) nicht auf 27 gekuerzt werden.
+            // Ein festes 27 wuerde beim Schliessen alle Items jenseits Slot 27 loeschen.
+            player.openMenu(new ShulkerBoxAccessoryContainerMenu(shulker, ShulkerBoxAccessoryContainerMenu.requiredSize(shulker)));
             player.awardStat(Stats.OPEN_SHULKER_BOX);
         }
     }

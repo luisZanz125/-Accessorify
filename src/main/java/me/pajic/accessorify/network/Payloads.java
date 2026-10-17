@@ -1,7 +1,7 @@
 package me.pajic.accessorify.network;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 //? if >= 1.21.1 {
 import net.minecraft.network.RegistryFriendlyByteBuf;

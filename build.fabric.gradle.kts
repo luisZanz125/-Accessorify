@@ -125,8 +125,12 @@ dependencies {
 	modImplementation("com.terraformersmc:modmenu:${prop("deps.modmenu")}")
 	implementation("com.moulberry:mixinconstraints:${prop("deps.mixinconstraints")}")
 	include("com.moulberry:mixinconstraints:${prop("deps.mixinconstraints")}")
-	modImplementation("io.wispforest:accessories-fabric:${prop("deps.accessories")}") {
-		exclude(group = "net.fabricmc.fabric-api", module = "fabric-api")
+	if (hasProperty("deps.accessories.jar")) {
+		modImplementation(rootProject.files(prop("deps.accessories.jar")))
+	} else {
+		modImplementation("io.wispforest:accessories-fabric:${prop("deps.accessories")}") {
+			exclude(group = "net.fabricmc.fabric-api", module = "fabric-api")
+		}
 	}
 	modImplementation("io.wispforest:owo-lib:${prop("deps.owo")}") {
 		exclude(group = "net.fabricmc.fabric-api", module = "fabric-api")
@@ -144,6 +148,15 @@ dependencies {
 	}
 	modImplementation("maven.modrinth:spyglass-astronomy:${prop("deps.sa")}") {
 		exclude(group = "net.fabricmc.fabric-api", module = "fabric-api")
+	}
+	// 1.21.11+ only mods
+	if (stonecutter.eval(stonecutter.current.version, ">= 1.21.11")) {
+		// Reinforced Shulker Boxes: nur Compile-Only, damit die Kompat-Klasse typsicher auf
+		// die reinfcore-API baut (createShulkerBoxScreen + Material-Groesse). Laeuft nur,
+		// wenn der Mod zur Laufzeit installiert ist (CompatFlags-Guard).
+		// reinfcore steckt normalerweise als nested Jar im RSB-Jar, hier separat geliefert.
+		modCompileOnly(rootProject.files("ext_imports/reinforced-shulker-boxes-3.5.0-beta+1.21.11.jar"))
+		modCompileOnly(rootProject.files("ext_imports/reinforced-core-4.0.9+1.21.11.jar"))
 	}
 	// 1.20.1 only mods
 	if (stonecutter.eval(stonecutter.current.version, "1.20.1")) {

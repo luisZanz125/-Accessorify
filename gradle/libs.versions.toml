@@ -3,7 +3,7 @@ stonecutter = "0.8-alpha.13"
 stonecutter-postprocess = "2.1-beta.8"
 mod-publish = "0.8.4"
 dotenv-gradle = "4.0.0"
-fabric-loom = "1.13-SNAPSHOT"
+fabric-loom = "1.15.5"
 neoforge-moddev = "2.0.119"
 foojay = "1.0.0"
 

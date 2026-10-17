@@ -18,7 +18,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
@@ -98,8 +99,8 @@ public class InfoOverlays {
             }
 
             if (Accessorify.CONFIG.infoOverlaySettings.overlayFields.biome.get()) {
-                ResourceLocation biome = MC.player.level().getBiome(blockPos).unwrap().map(
-                        key -> key != null ? key.location() : null, unknown -> null
+                Identifier biome = MC.player.level().getBiome(blockPos).unwrap().map(
+                        key -> key != null ? key.identifier() : null, unknown -> null
                 );
                 Component biomeName = Component.translatable("biome." + biome.getNamespace() + "." + biome.getPath());
                 renderList.add(new ObjectIntImmutablePair<>(biomeName, 0xffffffff));
@@ -174,7 +175,8 @@ public class InfoOverlays {
                 full moon is a hollow circle, new moon is a filled circle
                 It doesn't feel right so I shifted them to match the MC moon more -Meep*/
                 MutableComponent moonPhase;
-                switch (MC.level.getMoonPhase()) {
+                switch (MC.level.environmentAttributes()
+                        .getValue(EnvironmentAttributes.MOON_PHASE, MC.player.position()).index()) {
                     case 0 -> moonPhase = Component.literal("\uD83C\uDF11 ").append(
                             Component.translatable("gui.accessorify.full_moon"));
                     case 1 -> moonPhase = Component.literal("\uD83C\uDF18 ").append(

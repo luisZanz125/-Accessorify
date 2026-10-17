@@ -21,6 +21,10 @@ import net.minecraft.world.entity.ContainerUser;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.component.ItemContainerContents;
 //?}
+//? if >= 1.21.11 {
+import me.pajic.accessorify.util.CompatFlags;
+import me.pajic.accessorify.util.compat.ReinforcedShulkerBoxesCompat;
+//?}
 //? if 1.20.1
 //import net.minecraft.nbt.CompoundTag;
 
@@ -32,6 +36,36 @@ public class ShulkerBoxAccessoryContainerMenu implements Container, MenuProvider
     public ShulkerBoxAccessoryContainerMenu(ItemStack shulker, int size) {
         this.shulker = shulker;
         this.items = NonNullList.withSize(size, ItemStack.EMPTY);
+    }
+
+    /**
+     * Vanilla-Shulker-Boxen haben 27 Slots, aber ModBoxen koennen deutlich mehr haben
+     * (z.B. reinforced-shulker-boxes: Kupfer 45, Eisen 54, Gold 81, Diamant/Netherit 108).
+     * Die Menueliste muss so gross sein wie die gespeicherte container-Komponente, sonst
+     * kopiert startOpen() nur die ersten 27 Eintraege und schreibt stopOpen() die Komponente
+     * auf 27 zuruecks -- alle Items jenseits Slot 27 waeren dann dauerhaft verloren.
+     * Hinweis: die Komponente ist bereits auf den letzten nicht-leeren Slot gekuerzt,
+     * stream() liefert daher exakt die gespeicherte Anzahl.
+     */
+    public static int requiredSize(ItemStack shulker) {
+        //? if >= 1.21.1 {
+        int stored = (int) shulker.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).stream().count();
+        int generic = Math.max(27, stored);
+        //?} else {
+        //int generic = 27;
+        //?}
+        //? if >= 1.21.11 {
+        // Reinforced Shulker Boxes: das Material bestimmt die Slot-Anzahl (Kupfer 45,
+        // Eisen 54, Gold 81, Diamant/Netherit 108). Fuer diese Boxen muss die volle
+        // Groesse her, sonst faellt RSBs Screen-Handler auf 27 Slots zurueck.
+        if (CompatFlags.REINFORCED_SHULKER_BOXES_LOADED) {
+            int reinforcedSize = ReinforcedShulkerBoxesCompat.materialSize(shulker);
+            if (reinforcedSize > 0) {
+                return Math.max(reinforcedSize, generic);
+            }
+        }
+        //?}
+        return generic;
     }
 
     //? if < 1.21.10 {
@@ -138,6 +172,16 @@ public class ShulkerBoxAccessoryContainerMenu implements Container, MenuProvider
 
     @Override
     public @Nullable AbstractContainerMenu createMenu(int i, @NotNull Inventory inventory, @NotNull Player player) {
+        //? if >= 1.21.11 {
+        // Reinforced Shulker Boxes: RSBs eigenen Screen mit dem vollen Slot-Raster
+        // verwenden (identisch zum Oeffnen der platzierten Box in der Welt).
+        if (CompatFlags.REINFORCED_SHULKER_BOXES_LOADED) {
+            AbstractContainerMenu reinforced = ReinforcedShulkerBoxesCompat.createShulkerBoxMenu(shulker, i, inventory, this);
+            if (reinforced != null) {
+                return reinforced;
+            }
+        }
+        //?}
         return new ShulkerBoxMenu(i, inventory, this);
     }
 

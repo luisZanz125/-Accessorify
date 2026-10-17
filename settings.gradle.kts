@@ -22,10 +22,13 @@ stonecutter {
 		fun match(version: String, vararg loaders: String) =
 			loaders.forEach { version("$version-$it", version).buildscript = "build.$it.gradle.kts" }
 
-		match("1.21.10", "fabric", "neoforge")
-		match("1.21.1", "fabric", "neoforge")
-		match("1.20.1", "fabric")
+		// Portiert auf 1.21.11: auf eine Version eingekleinert (nur Fabric),
+		// damit die Konfiguration nicht alle MC-Versionen herunterlädt.
+		// match("1.21.10", "fabric", "neoforge")
+		match("1.21.11", "fabric")
+		// match("1.21.1", "fabric", "neoforge")
+		// match("1.20.1", "fabric")
 
-		vcsVersion = "1.21.10-fabric"
+		vcsVersion = "1.21.11-fabric"
 	}
 }

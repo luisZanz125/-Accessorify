@@ -4,11 +4,11 @@ import io.wispforest.accessories.api.slot.SlotReference;
 import me.pajic.accessorify.accessories.AccessoryExtension;
 import me.pajic.accessorify.util.AccessoryUtil;
 import me.pajic.accessorify.util.GeneralUtil;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 
 public class FabricSeasonsCalendarAccessory implements AccessoryExtension {
-	public static final ResourceLocation ITEM_ID = GeneralUtil.customId("seasonsextras", "season_calendar");
+	public static final Identifier ITEM_ID = GeneralUtil.customId("seasonsextras", "season_calendar");
 
     @Override
     public String getAttributePath() {

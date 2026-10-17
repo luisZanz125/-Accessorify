@@ -3,7 +3,7 @@ package me.pajic.accessorify;
 import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
 import me.pajic.accessorify.config.ModConfig;
 import me.pajic.accessorify.platform.Platform;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +20,7 @@ public class Accessorify {
 	public static final String MOD_VERSION = /*$ mod_version*/ "2.4.0";
 	public static final String MOD_FRIENDLY_NAME = /*$ mod_name*/ "Accessorify";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-	public static final ResourceLocation CONFIG_RL = id("config");
+	public static final Identifier CONFIG_RL = id("config");
 	public static ModConfig CONFIG = ConfigApiJava.registerAndLoadConfig(ModConfig::new);
 	private static final Platform PLATFORM = createPlatformInstance();
 
@@ -43,11 +43,11 @@ public class Accessorify {
 		*///?}
 	}
 
-	public static ResourceLocation id(String path) {
+	public static Identifier id(String path) {
 		//? if 1.20.1
 		//return new ResourceLocation(MOD_ID, path);
 		//? if > 1.20.1
-		return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+		return Identifier.fromNamespaceAndPath(MOD_ID, path);
 	}
 
 	public static void debugLog(String message, Object ... args) {
